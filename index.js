@@ -48,4 +48,16 @@ io.on('connection', (socket) => {
         console.log(reason);
     })
     socket.emit('messages', messages)
+    socket.on('message', (msg) => {
+        let payload = {
+            id: new Date().getTime(),
+            time: new Date().toISOString(),
+            text: msg,
+            user: 'Guest'
+        }
+        console.log(payload)
+        messages.push(payload);
+        socket.broadcast.emit('message', payload);
+        socket.emit('message', payload);
+    })
 });
