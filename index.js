@@ -12,16 +12,21 @@ app.use(cors({
     methods: ['GET', ['POST', 'PUT', 'DELETE']]
 }))
 
-app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
+app.use(express.static('public'))
+app.get('/', (req, res) => res.sendFile(__dirname + '/public/index.html'));
 
 const server = app.listen(PORT, () => console.log(`Listening on http://localhost:3000`));
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+        origin: '*'
+    }
+});
 io.use((socket, next) => {
-    console.log(socket.id, socket.request)
+    // console.log(socket.id, socket.request)
     next();
 });
 io.on('connection', (socket) => {
-    console.log('a user Connected', socket.id, socket.user);
+    console.log('a user Connected', socket.id);
     socket.on('disconnect', (reason) => {
         console.log('Disconnected');
         console.log(reason);
