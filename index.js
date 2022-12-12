@@ -21,6 +21,22 @@ const io = new Server(server, {
         origin: '*'
     }
 });
+
+let messages = [
+    {
+        id: '2352235235',
+        time: new Date().toISOString(),
+        user: 'Abdur',
+        text: 'Hi'
+    },
+    {
+        id: '36363477',
+        time: new Date().toISOString(),
+        user: 'Rian',
+        text: 'Hello'
+    }
+]
+
 io.use((socket, next) => {
     // console.log(socket.id, socket.request)
     next();
@@ -31,4 +47,5 @@ io.on('connection', (socket) => {
         console.log('Disconnected');
         console.log(reason);
     })
+    socket.emit('messages', messages)
 });
